@@ -5,7 +5,7 @@ namespace vega.Controllers.Resource
 
     public class SaveVehicleResource
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public bool IsRegistered { get; set; }
 

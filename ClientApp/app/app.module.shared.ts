@@ -1,3 +1,4 @@
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 //import * as Raven from 'raven-js';
 import { ErrorHandler } from '@angular/core';
 import { CustomErrorHandler } from './services/app.error-handle';
@@ -24,7 +25,8 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
         CounterComponent,
         FetchDataComponent,
         HomeComponent,
-        VehicleFormComponent
+        VehicleFormComponent,
+        VehicleListComponent
     ],
     imports: [
         CommonModule,
@@ -32,8 +34,9 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
         HttpModule,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
+            { path: 'vehicles', component: VehicleListComponent },
             { path: 'vehicles/new', component: VehicleFormComponent },
             { path: 'vehicles/:id', component: VehicleFormComponent },
             { path: 'counter', component: CounterComponent },

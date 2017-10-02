@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using vega.Controllers.Resource;
 using vega.Core.Models;
 using vega.Core;
+using System.Collections.Generic;
 
 namespace vega.Controllers
 {
@@ -29,7 +30,6 @@ namespace vega.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
-            throw new Exception();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
            
@@ -105,6 +105,19 @@ namespace vega.Controllers
             var result = mapper.Map<Vehicle, VehicleResource>(vehicle);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVehicles(int id)
+        {
+            var vehicles = await vehicleRepository.GetVehicles();
+
+            if (vehicles == null)
+                return NotFound();
+
+            var results = mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
+
+            return Ok(results);
         }
     }
 }

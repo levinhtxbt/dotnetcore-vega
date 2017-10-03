@@ -18,7 +18,7 @@ export class VehicleListComponent implements OnInit {
     private router: Router,
     private vehicleService: VehicleService,
     private toastyService: ToastyService) {
-
+      
   }
 
   ngOnInit() {

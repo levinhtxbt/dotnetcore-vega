@@ -14,9 +14,7 @@ export class VehicleListComponent implements OnInit {
   vehicles: Vehicle[];
   allVehicles: Vehicle[];
   makes: KeyValuePair[];
-  filter: any = {
-    makeId: 0
-  }
+  filter: any = {}
 
   constructor(
     private route: ActivatedRoute,

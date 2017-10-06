@@ -32,7 +32,7 @@ namespace vega.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-           
+
             if (vehicleResource.Contact == null)
             {
                 ModelState.AddModelError("Contact", "Contact is invalid");
@@ -108,9 +108,11 @@ namespace vega.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVehicles(int id)
+        public async Task<IActionResult> GetVehicles(VehicleQueryResource queryResource)
         {
-            var vehicles = await vehicleRepository.GetVehicles();
+            var query = Mapper.Map<VehicleQueryResource, VehicleQuery>(queryResource);
+
+            var vehicles = await vehicleRepository.GetVehicles(query);
 
             if (vehicles == null)
                 return NotFound();

@@ -75,7 +75,6 @@ namespace vega.Persistence
                 vehicleQueryable = vehicleQueryable
                     .Where(v => v.ModelId == query.ModelId.Value);
 
-
             var columnsMap = new Dictionary<string, Expression<Func<Vehicle, object>>>()
             {
                 ["make"] = v => v.Model.Make.Name,
@@ -83,32 +82,10 @@ namespace vega.Persistence
                 ["contactName"] = v => v.ContactName    
             };
 
-            //vehicleQueryable = ApplyOrdering(query, vehicleQueryable, columnsMap);
-
             vehicleQueryable = vehicleQueryable.ApplyOrdering(query, columnsMap);
-
-            // if (query.OrderBy.Equals("make"))
-            //     vehicleQueryable = query.IsSortAscending ? vehicleQueryable.OrderBy(v => v.Model.Make.Name) : vehicleQueryable.OrderByDescending(v => v.Model.Make.Name);
-
-            // if (query.OrderBy.Equals("model"))
-            //     vehicleQueryable = query.IsSortAscending ? vehicleQueryable.OrderBy(v => v.Model.Name) : vehicleQueryable.OrderByDescending(v => v.Model.Name);
-
-            // if (query.OrderBy.Equals("contactName"))
-            //     vehicleQueryable = query.IsSortAscending ? vehicleQueryable.OrderBy(v => v.ContactName) : vehicleQueryable.OrderByDescending(v => v.ContactName);
-
-            // if (query.OrderBy.Equals("id"))
-            //     vehicleQueryable = query.IsSortAscending ? vehicleQueryable.OrderBy(v => v.Id) : vehicleQueryable.OrderByDescending(v => v.Id);
 
             return await vehicleQueryable.ToListAsync();
         }
 
-        // private IQueryable<Vehicle> ApplyOrdering(VehicleQuery query, IQueryable<Vehicle> vehicleQueryable,
-        //     Dictionary<string, Expression<Func<Vehicle, object>>> columnsMap)
-        // {
-        //     if (query.IsSortAscending)
-        //         return vehicleQueryable.OrderBy(columnsMap[query.OrderBy]);
-        //     else
-        //         return vehicleQueryable.OrderByDescending(columnsMap[query.OrderBy]);
-        // }
     }
 }

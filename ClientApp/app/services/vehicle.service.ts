@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class VehicleService {
 
+    vehiclesEndpoint = 'api/vehicles';
+
     constructor(private http: Http) { }
 
     getMakes() {
@@ -25,35 +27,45 @@ export class VehicleService {
     createVehicle(vehicle: SaveVehicle) {
         return this
             .http
-            .post('api/vehicles', vehicle)
+            .post(this.vehiclesEndpoint, vehicle)
             .map(res => res.json());
     }
 
     getVehicle(id: number) {
         return this
             .http
-            .get('api/vehicles/' + id)
+            .get(this.vehiclesEndpoint + '/' + id)
             .map(res => res.json());
     }
 
     updateVehicle(vehicle: SaveVehicle) {
         return this
             .http
-            .put('api/vehicles/' + vehicle.id, vehicle)
+            .put(this.vehiclesEndpoint + '/' + vehicle.id, vehicle)
             .map(res => res.json());
     }
 
     deleteVehicle(id: number) {
         return this
             .http
-            .delete('api/vehicles/' + id)
+            .delete(this.vehiclesEndpoint + '/' + id)
             .map(res => res.json());
     }
 
-    getVehicles() {
+    getVehicles(filter: any) {
         return this
             .http
-            .get('api/vehicles')
+            .get(this.vehiclesEndpoint + '?' + this.toQueryString(filter))
             .map(res => res.json());
+    }
+
+    toQueryString(obj: any) {
+        var parts = [];
+        for (var property in obj) {
+            var value = obj[property];
+            if (value != null && value != undefined)
+                parts.push(encodeURIComponent(property) + '=' + encodeURIComponent(value));
+        }
+        return parts.join('&'); 
     }
 }

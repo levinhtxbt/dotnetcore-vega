@@ -12,9 +12,8 @@ import { Component, OnInit } from '@angular/core';
 export class VehicleListComponent implements OnInit {
 
   vehicles: Vehicle[];
-  allVehicles: Vehicle[];
   makes: KeyValuePair[];
-  filter: any = {}
+  query: any = {}
 
   constructor(
     private route: ActivatedRoute,
@@ -25,14 +24,8 @@ export class VehicleListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getVehicle();
+    this.populateVehicles();
     this.getMakes();
-  }
-
-  getVehicle() {
-    this.vehicleService
-      .getVehicles()
-      .subscribe(vehicles => this.vehicles = this.allVehicles = vehicles);
   }
 
   getMakes() {
@@ -42,20 +35,31 @@ export class VehicleListComponent implements OnInit {
   }
 
   onFilterChange() {
-    console.log(this.filter);
-    var vehicles = this.allVehicles;
-
-    if (this.filter.makeId)
-      vehicles = vehicles.filter(v => v.make.id == this.filter.makeId);
-
-    this.vehicles = vehicles;
+    this.populateVehicles();
   }
 
   resetFilter() {
-    this.filter = {};
+    this.query = {};
 
     this.onFilterChange();
 
   }
 
+  sortBy(sortColumn: string) {
+
+    if (this.query.orderBy === sortColumn) {
+      this.query.isSortAscending = !this.query.isSortAscending;
+    } else {
+      this.query.orderBy = sortColumn;
+      this.query.isSortAscending = true;
+    }
+
+   this.populateVehicles();
+  }
+
+  private populateVehicles() {
+    this.vehicleService
+      .getVehicles(this.query)
+      .subscribe(vehicles => this.vehicles = vehicles);
+  }
 }

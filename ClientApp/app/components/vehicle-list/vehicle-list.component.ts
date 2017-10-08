@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VehicleListComponent implements OnInit {
 
-  private readonly PAGE_SIZE = 3;
+  private readonly PAGE_SIZE = 10;
 
   queryResult: any = {};
   makes: KeyValuePair[];

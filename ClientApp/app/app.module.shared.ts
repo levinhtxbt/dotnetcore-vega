@@ -1,3 +1,4 @@
+
 //import * as Raven from 'raven-js';
 import { ErrorHandler } from '@angular/core';
 import { CustomErrorHandler } from './services/app.error-handle';
@@ -16,6 +17,7 @@ import { CounterComponent } from './components/counter/counter.component';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
+import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 
 //Raven.config('https://6c62dd47cfae446191762248e67cce1e@sentry.io/224357').install();
 
@@ -28,7 +30,8 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
         HomeComponent,
         VehicleFormComponent,
         VehicleListComponent,
-        PaginationComponent
+        PaginationComponent,
+        ViewVehicleComponent
     ],
     imports: [
         CommonModule,
@@ -40,7 +43,8 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
             { path: 'home', component: HomeComponent },
             { path: 'vehicles', component: VehicleListComponent },
             { path: 'vehicles/new', component: VehicleFormComponent },
-            { path: 'vehicles/:id', component: VehicleFormComponent },
+            { path: 'vehicles/edit/:id', component: VehicleFormComponent },
+            { path: 'vehicles/:id', component: ViewVehicleComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
             { path: '**', redirectTo: 'home' }

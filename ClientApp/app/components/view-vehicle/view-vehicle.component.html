@@ -1,0 +1,42 @@
+<div class="panel with-nav-tabs" *ngIf="vehicle">
+  <div class="panel-heading">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#tabInfo" data-toggle="tab">Info</a>
+      </li>
+      <li>
+        <a href="#tabPhoto" data-toggle="tab">Photo</a>
+      </li>
+    </ul>
+  </div>
+  <div class="panel-body">
+    <div class="tab-content">
+      <div class="tab-pane fade in active" id="tabInfo">
+        <h2>Basic</h2>
+        <ul>
+          <li>Make: {{vehicle.make.name}}</li>
+          <li>Model: {{vehicle.model.name}}</li>
+          <li>IsRegistered: {{vehicle.isRegistered}}</li>
+
+        </ul>
+        <h2>Features</h2>
+        <ul>
+          <li *ngFor="let f of vehicle.features">{{f.name}}</li>
+        </ul>
+        <h2>Contact</h2>
+        <ul>
+          <li>Name: {{vehicle.contact.name}}</li>
+          <li>Phone: {{vehicle.contact.phone}}</li>
+          <li>Email: {{vehicle.contact.email}}</li>
+        </ul>
+      </div>
+      <div class="tab-pane fade" id="tabPhoto">
+        <h2>Photos</h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a class="btn btn-primary" [routerLink]="['/vehicles/edit/' + vehicleId]">Update</a>
+<a class="btn btn-danger" (click)="delete()">Delete</a>
+<a class="btn btn-default" [routerLink]="['/vehicles']">View all vehicles</a>

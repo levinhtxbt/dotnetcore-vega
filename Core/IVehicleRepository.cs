@@ -9,7 +9,7 @@ namespace vega.Core
     {
         Task<IEnumerable<Vehicle>> GetVehicles();
 
-        Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery query);
+        Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery query);
 
         Task<Vehicle> GetVehicle(int id, bool includeRelated);
 

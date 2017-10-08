@@ -13,24 +13,22 @@
 </div>
 
 
-<table class='table' *ngIf="vehicles">
+<table class='table'>
     <thead>
         <tr>
-            <th>Id</th>
-            <th (click)="sortBy('make')">Make
-                <i *ngIf="query.orderBy === 'make'" class="fa" [class.fa-sort-asc]="query.isSortAscending" [class.fa-sort-desc]="!query.isSortAscending"></i>
+            <th *ngFor="let c of columns">
+                <div *ngIf="c.isSortable" (click)="sortBy(c.id)"> {{c.title}}
+                    <i *ngIf="query.orderBy === c.id" class="fa" [class.fa-sort-asc]="query.isSortAscending" [class.fa-sort-desc]="!query.isSortAscending"></i>
+                </div>
+                <div *ngIf="!c.isSortable">
+                    {{c.title}}
+                </div>
             </th>
-            <th (click)="sortBy('model')">Model
-                <i *ngIf="query.orderBy === 'model'" class="fa" [class.fa-sort-asc]="query.isSortAscending" [class.fa-sort-desc]="!query.isSortAscending"></i>
-            </th>
-            <th (click)="sortBy('contactName')">Contact Name
-                <i *ngIf="query.orderBy === 'contactName'" class="fa" [class.fa-sort-asc]="query.isSortAscending" [class.fa-sort-desc]="!query.isSortAscending"></i>
-            </th>
-            <th></th>
+
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let vehicle of vehicles">
+        <tr *ngFor="let vehicle of queryResult.items">
             <td>{{ vehicle.id }}</td>
             <td>{{ vehicle.make.name }}</td>
             <td>{{ vehicle.model.name }}</td>
@@ -41,3 +39,9 @@
         </tr>
     </tbody>
 </table>
+
+<pagination 
+    [total-items]="queryResult.totalItems" 
+    [page-size]="query.pageSize" 
+    (page-changed)="onPageChange($event)">
+</pagination>

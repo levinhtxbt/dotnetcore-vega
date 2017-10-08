@@ -112,12 +112,12 @@ namespace vega.Controllers
         {
             var query = Mapper.Map<VehicleQueryResource, VehicleQuery>(queryResource);
 
-            var vehicles = await vehicleRepository.GetVehicles(query);
+            var queryResult = await vehicleRepository.GetVehicles(query);
 
-            if (vehicles == null)
+            if (queryResult == null)
                 return NotFound();
 
-            var results = mapper.Map<IEnumerable<Vehicle>, IEnumerable<VehicleResource>>(vehicles);
+            var results = mapper.Map<QueryResult<Vehicle>, QueryResultResource<VehicleResource>>(queryResult);
 
             return Ok(results);
         }

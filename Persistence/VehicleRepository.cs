@@ -58,8 +58,10 @@ namespace vega.Persistence
             .ToListAsync();
         }
 
-        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery query)
+        public async Task<QueryResult<Vehicle>> GetVehicles(VehicleQuery query)
         {
+            var queryResult = new QueryResult<Vehicle>();
+
             var vehicleQueryable = dbContext.Vehicles
             .Include(v => v.Features)
                 .ThenInclude(vf => vf.Feature)
@@ -83,8 +85,14 @@ namespace vega.Persistence
             };
 
             vehicleQueryable = vehicleQueryable.ApplyOrdering(query, columnsMap);
+            
+            queryResult.TotalItems = await vehicleQueryable.CountAsync();
 
-            return await vehicleQueryable.ToListAsync();
+            vehicleQueryable = vehicleQueryable.ApplyPaging(query);
+
+            queryResult.Items = await vehicleQueryable.ToListAsync();
+            
+            return queryResult;
         }
 
     }

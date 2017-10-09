@@ -1,4 +1,3 @@
-
 //import * as Raven from 'raven-js';
 import { ErrorHandler } from '@angular/core';
 import { CustomErrorHandler } from './services/app.error-handle';
@@ -18,6 +17,7 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
+import { PhotoService } from './services/photo.service';
 
 //Raven.config('https://6c62dd47cfae446191762248e67cce1e@sentry.io/224357').install();
 
@@ -52,7 +52,8 @@ import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.com
     ],
     providers: [
         { provide: ErrorHandler, useClass: CustomErrorHandler },
-        VehicleService
+        VehicleService,
+        PhotoService
     ]
 })
 export class AppModuleShared {

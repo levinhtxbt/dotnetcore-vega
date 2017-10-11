@@ -14,6 +14,7 @@ export class ViewVehicleComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   vehicle: any;
   vehicleId: number;
+  photos: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +37,10 @@ export class ViewVehicleComponent implements OnInit {
     this.vehicleService
       .getVehicle(this.vehicleId)
       .subscribe(vehicle => this.vehicle = vehicle);
+
+    this.photoService
+      .getPhotos(this.vehicleId)
+      .subscribe(photos => this.photos = photos);
   }
 
   delete() {
@@ -57,10 +62,10 @@ export class ViewVehicleComponent implements OnInit {
 
     this.photoService
       .upload(this.vehicleId, nativeElement.files[0])
-      .subscribe(x => console.log(x));
+      .subscribe(photo => this.photos.push(photo));
   }
 
-  private pushSuccessNotification(msg: string) {
+  private pushSuccessNotification(msg) {
 
     this.toastyService.success({
       title: 'Success',

@@ -29,15 +29,15 @@
           <li>Phone: {{vehicle.contact.phone}}</li>
           <li>Email: {{vehicle.contact.email}}</li>
         </ul>
+        <a class="btn btn-primary" [routerLink]="['/vehicles/edit/' + vehicleId]">Update</a>
+        <a class="btn btn-danger" (click)="delete()">Delete</a>
+        <a class="btn btn-default" [routerLink]="['/vehicles']">View all vehicles</a>
       </div>
       <div class="tab-pane fade" id="tabPhoto">
         <h2>Photos</h2>
         <input type="file" (change)="uploadPhoto()" #fileInput>
+        <img *ngFor="let photo of photos" src="/uploads/{{ photo.fileName }}" class="img-thumbnail">
       </div>
     </div>
   </div>
 </div>
-
-<a class="btn btn-primary" [routerLink]="['/vehicles/edit/' + vehicleId]">Update</a>
-<a class="btn btn-danger" (click)="delete()">Delete</a>
-<a class="btn btn-default" [routerLink]="['/vehicles']">View all vehicles</a>

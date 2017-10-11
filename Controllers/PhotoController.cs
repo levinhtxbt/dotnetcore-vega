@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,6 +19,7 @@ namespace vega.Controllers
         private readonly IHostingEnvironment host;
         private readonly IVehicleRepository vehicleRepository;
         private readonly IMapper mapper;
+        private readonly IPhotoRepository photoRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly PhotoSettings photoSettings;
 
@@ -26,10 +28,12 @@ namespace vega.Controllers
             IVehicleRepository vehicleRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IOptionsSnapshot<PhotoSettings> options)
+            IOptionsSnapshot<PhotoSettings> options,
+            IPhotoRepository photoRepository)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.photoRepository = photoRepository;
             this.vehicleRepository = vehicleRepository;
             this.host = host;
             this.photoSettings = options.Value;
@@ -57,7 +61,7 @@ namespace vega.Controllers
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             var filePath = Path.Combine(uploadFolderPath, fileName);
 
-            using (var stream = new FileStream(filePath, FileMode.Create) )
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
@@ -68,6 +72,15 @@ namespace vega.Controllers
 
             return Ok(mapper.Map<Photo, PhotoResource>(photo));
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPhotos(int vehicleId)
+        {
+            var photos = await photoRepository.GetPhotos(vehicleId);
+            var result = Mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
+
+            return Ok(result);
         }
     }
 }

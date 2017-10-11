@@ -16,4 +16,11 @@ export class PhotoService {
             .post(`/api/vehicles/${vehicleId}/photo`, formData)
             .map(res => res.json());
     }
+
+    getPhotos(vehicleId: number) {
+        return this
+            .http
+            .get(`/api/vehicles/${vehicleId}/photo`)
+            .map(res => res.json());
+    }
 }

@@ -6,6 +6,7 @@ using vega.Persistence;
 using Microsoft.EntityFrameworkCore;
 using vega.Core.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace vega.Controllers
 {
@@ -20,6 +21,7 @@ namespace vega.Controllers
         }
 
         [HttpGet("api/features")]
+        [Authorize]
         public async Task<IEnumerable<KeyValuePairResource>> GetFeatures()
         {
             var features = await this.dbContext.Features.ToListAsync();

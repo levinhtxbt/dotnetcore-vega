@@ -1,3 +1,5 @@
+import { CallbackComponent } from './components/callback/callback.component';
+import { AuthService } from './services/auth.service';
 import { BrowserXhr } from '@angular/http';
 import { BrowserXhrWithProgress, ProgressService } from './services/progress.service';
 //import * as Raven from 'raven-js';
@@ -33,7 +35,8 @@ import { PhotoService } from './services/photo.service';
         VehicleFormComponent,
         VehicleListComponent,
         PaginationComponent,
-        ViewVehicleComponent
+        ViewVehicleComponent,
+        CallbackComponent 
     ],
     imports: [
         CommonModule,
@@ -49,12 +52,14 @@ import { PhotoService } from './services/photo.service';
             { path: 'vehicles/:id', component: ViewVehicleComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'callback', component: CallbackComponent },
             { path: '**', redirectTo: 'home' }
         ])
     ],
     providers: [
         { provide: ErrorHandler, useClass: CustomErrorHandler },
         { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
+        AuthService,
         ProgressService,
         VehicleService,
         PhotoService

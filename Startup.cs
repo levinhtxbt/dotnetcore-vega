@@ -8,6 +8,7 @@ using AutoMapper;
 using vega.Persistence;
 using vega.Core;
 using vega.Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace vega
 {
@@ -29,7 +30,7 @@ namespace vega
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
-            
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
@@ -38,7 +39,18 @@ namespace vega
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddAutoMapper();
 
-            services.AddMvc();
+            services.AddMvc(); services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://levinh.auth0.com/";
+                options.Audience = "htts://levinh.net";
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +70,9 @@ namespace vega
             }
 
             app.UseStaticFiles();
+
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

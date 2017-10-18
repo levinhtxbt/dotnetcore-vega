@@ -11,11 +11,17 @@ export class AuthService {
     domain: 'levinh.auth0.com',
     responseType: 'token id_token',
     audience: 'https://levinh.auth0.com/userinfo',
-    redirectUri: 'http://localhost:5000/callback',      
+    redirectUri: 'http://localhost:5000/callback',
     scope: 'openid'
   });
+  profile: any;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router) {
+    this.profile = JSON.parse(localStorage.getItem('profile'));
+    
+    
+
+  }
 
   public login(): void {
     this.auth0.authorize();
@@ -26,9 +32,13 @@ export class AuthService {
       console.log(authResult);
 
       if (authResult && authResult.accessToken) {
+
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/home']);
+        this.getProfile((err, profile) => {
+          this.profile = profile;
+        });
       } else if (err) {
         this.router.navigate(['/home']);
         console.log(err);
@@ -36,19 +46,40 @@ export class AuthService {
     });
   }
 
+  public getProfile(cb): void {
+    const accessToken = localStorage.getItem('access_token');
+
+    if (!accessToken) {
+      throw new Error('Access token must exist to fetch profile');
+    }
+
+    const self = this;
+    this.auth0.client.userInfo(accessToken, (err, profile) => {
+      
+      console.log(profile);
+
+      if (profile) {
+        self.profile = profile;
+        localStorage.setItem('profile', JSON.stringify(profile));
+      }
+      cb(err, profile);
+    });
+  }
+
   private setSession(authResult): void {
     // Set the time that the access token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
-    //localStorage.setItem('id_token', authResult.idToken);
+    // localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
   }
 
   public logout(): void {
     // Remove tokens and expiry time from localStorage
     localStorage.removeItem('access_token');
-    //localStorage.removeItem('id_token');
+    // localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('profile');
     // Go back to the home route
     this.router.navigate(['/']);
   }

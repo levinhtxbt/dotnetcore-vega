@@ -9,5 +9,6 @@ import { Component } from '@angular/core';
 export class AppComponent {
     constructor(public auth: AuthService) {
         auth.handleAuthentication();
+        
     }
 }

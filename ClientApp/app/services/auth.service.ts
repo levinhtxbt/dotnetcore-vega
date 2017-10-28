@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/filter';
 import * as auth0 from 'auth0-js';
+import { JwtHelper } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
@@ -9,18 +10,24 @@ export class AuthService {
   auth0 = new auth0.WebAuth({
     clientID: 'KP6ZGvMn3UjbsA3CkHgRUR5vwNbdeAbh',
     domain: 'levinh.auth0.com',
-    responseType: 'token id_token',
-    audience: 'https://levinh.auth0.com/userinfo',
+    responseType: 'token',
+    audience: 'htts://levinh.net',
     redirectUri: 'http://localhost:5000/callback',
-    scope: 'openid'
+    scope: 'openid email profile'
   });
-  profile: any;
+  public profile: any;
+  public roles: string[] = [];
 
   constructor(public router: Router) {
     this.profile = JSON.parse(localStorage.getItem('profile'));
-    
-    
 
+    var accessToken = localStorage.getItem('access_token');
+    if(accessToken) {
+      let jwtHelper = new JwtHelper();
+      var decodedToken = jwtHelper.decodeToken(accessToken);
+      this.roles = decodedToken['https://levinh.net/roles'];
+      console.log(this.roles);
+    }
   }
 
   public login(): void {
@@ -32,6 +39,11 @@ export class AuthService {
       console.log(authResult);
 
       if (authResult && authResult.accessToken) {
+
+        let jwtHelper = new JwtHelper();
+        var decodedToken = jwtHelper.decodeToken(authResult.accessToken);
+        this.roles = decodedToken['https://levinh.net/roles'];
+        console.log(this.roles);
 
         window.location.hash = '';
         this.setSession(authResult);
@@ -55,7 +67,7 @@ export class AuthService {
 
     const self = this;
     this.auth0.client.userInfo(accessToken, (err, profile) => {
-      
+
       console.log(profile);
 
       if (profile) {
@@ -80,6 +92,9 @@ export class AuthService {
     // localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('profile');
+    this.profile = null;
+    this.roles = null;
+
     // Go back to the home route
     this.router.navigate(['/']);
   }

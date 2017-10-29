@@ -11,9 +11,10 @@ export class AuthService {
     clientID: 'KP6ZGvMn3UjbsA3CkHgRUR5vwNbdeAbh',
     domain: 'levinh.auth0.com',
     responseType: 'token',
-    audience: 'htts://levinh.net',
-    redirectUri: 'http://localhost:5000/callback',
-    scope: 'openid email profile'
+    // Move to hosted page 
+    // audience: 'htts://levinh.net',
+    // redirectUri: 'http://localhost:5000/callback',
+    // scope: 'openid email profile'
   });
   public profile: any;
   private roles: string[] = [];

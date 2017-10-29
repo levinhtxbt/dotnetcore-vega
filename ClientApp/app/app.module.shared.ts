@@ -1,3 +1,5 @@
+import { AdminGuard } from './services/admin.guard';
+import { AuthGuard } from './services/auth.guard';
 import { AdminComponent } from './components/admin/admin.component';
 import { CallbackComponent } from './components/callback/callback.component';
 import { AuthService } from './services/auth.service';
@@ -7,7 +9,7 @@ import { BrowserXhrWithProgress, ProgressService } from './services/progress.ser
 import { ErrorHandler } from '@angular/core';
 import { CustomErrorHandler } from './services/app.error-handle';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, CanActivate } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
@@ -52,7 +54,7 @@ import { PhotoService } from './services/photo.service';
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
-      { path: 'admin', component: AdminComponent },
+      { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
       { path: 'callback', component: CallbackComponent },
       { path: '**', redirectTo: 'home' }
     ])
@@ -63,7 +65,9 @@ import { PhotoService } from './services/photo.service';
     AuthService,
     ProgressService,
     VehicleService,
-    PhotoService
+    PhotoService,
+    AuthGuard,
+    AdminGuard
   ]
 })
 export class AppModuleShared {

@@ -20,20 +20,20 @@ namespace vega.Controllers
         private readonly IVehicleRepository vehicleRepository;
         private readonly IMapper mapper;
         private readonly IPhotoRepository photoRepository;
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IPhotoService photoService;
         private readonly PhotoSettings photoSettings;
 
         public PhotoController(
             IHostingEnvironment host,
             IVehicleRepository vehicleRepository,
-            IUnitOfWork unitOfWork,
             IMapper mapper,
             IOptionsSnapshot<PhotoSettings> options,
-            IPhotoRepository photoRepository)
+            IPhotoRepository photoRepository,
+            IPhotoService photoService)
         {
-            this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.photoRepository = photoRepository;
+            this.photoService = photoService;
             this.vehicleRepository = vehicleRepository;
             this.host = host;
             this.photoSettings = options.Value;
@@ -54,21 +54,7 @@ namespace vega.Controllers
             if (!photoSettings.IsSupported(file.FileName)) return BadRequest("Invaid file type");
 
             var uploadFolderPath = Path.Combine(host.WebRootPath, "uploads");
-
-            if (!Directory.Exists(uploadFolderPath))
-                Directory.CreateDirectory(uploadFolderPath);
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(uploadFolderPath, fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            var photo = new Photo { FileName = fileName };
-            vehicle.Photos.Add(photo);
-            await unitOfWork.CompleteAsync();
+            var photo = await photoService.UploadPhoto(vehicle, file, uploadFolderPath);
 
             return Ok(mapper.Map<Photo, PhotoResource>(photo));
 

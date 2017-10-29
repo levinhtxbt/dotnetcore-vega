@@ -36,7 +36,7 @@ export class AuthService {
         this.setSession(authResult);
         this.router.navigate(['/home']);
         this.getProfile((err, profile) => {
-          this.readUserFromLocalStorage();    
+          this.readUserFromLocalStorage();
         });
       } else if (err) {
         this.router.navigate(['/home']);
@@ -54,12 +54,8 @@ export class AuthService {
     if (accessToken) {
       let jwtHelper = new JwtHelper();
       var decodedToken = jwtHelper.decodeToken(accessToken);
-      if (decodedToken['https://levinh.net/roles']) {
-        this.roles = decodedToken['https://levinh.net/roles'];  
-      } else 
-        this.roles = [];
-    } else
-      this.roles = [];
+      this.roles = decodedToken['https://levinh.net/roles'] || [];
+    }
   }
 
   public getProfile(cb): void {

@@ -21,7 +21,6 @@ namespace vega.Controllers
         }
 
         [HttpGet("api/features")]
-        [Authorize]
         public async Task<IEnumerable<KeyValuePairResource>> GetFeatures()
         {
             var features = await this.dbContext.Features.ToListAsync();

@@ -25,6 +25,7 @@ import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 import { PhotoService } from './services/photo.service';
+import { AUTH_PROVIDERS } from 'angular2-jwt';
 
 //Raven.config('https://6c62dd47cfae446191762248e67cce1e@sentry.io/224357').install();
 
@@ -61,9 +62,9 @@ import { PhotoService } from './services/photo.service';
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },
-    { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
+    
     AuthService,
-    ProgressService,
+    AUTH_PROVIDERS,
     VehicleService,
     PhotoService,
     AuthGuard,

@@ -12,11 +12,13 @@ export class ProgressService {
     }
 
     notify(event) {
-        this.uploadProgress.next(event);
+        if (this.uploadProgress)
+            this.uploadProgress.next(event);
     }
 
     stopTracking() {
-        this.uploadProgress.complete();
+        if (this.uploadProgress)
+            this.uploadProgress.complete();
     }
 }
 

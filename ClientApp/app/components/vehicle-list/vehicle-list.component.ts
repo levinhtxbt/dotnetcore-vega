@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { Vehicle, KeyValuePair } from './../../models/vehicle';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,7 +32,8 @@ export class VehicleListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private vehicleService: VehicleService,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    private auth: AuthService) {
 
   }
 

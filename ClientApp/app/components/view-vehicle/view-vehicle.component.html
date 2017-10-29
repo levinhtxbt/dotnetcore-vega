@@ -29,13 +29,13 @@
           <li>Phone: {{vehicle.contact.phone}}</li>
           <li>Email: {{vehicle.contact.email}}</li>
         </ul>
-        <a class="btn btn-primary" [routerLink]="['/vehicles/edit/' + vehicleId]">Update</a>
-        <a class="btn btn-danger" (click)="delete()">Delete</a>
+        <a *ngIf="auth.isAuthenticated()" class="btn btn-primary" [routerLink]="['/vehicles/edit/' + vehicleId]">Update</a>
+        <a *ngIf="auth.isAuthenticated()" class="btn btn-danger" (click)="delete()">Delete</a>
         <a class="btn btn-default" [routerLink]="['/vehicles']">View all vehicles</a>
       </div>
       <div class="tab-pane fade" id="tabPhoto">
         <h2>Photos</h2>
-        <input type="file" (change)="uploadPhoto()" #fileInput>
+        <input  *ngIf="auth.isAuthenticated()" type="file" (change)="uploadPhoto()" #fileInput>
         <div class="progress" *ngIf="progress && progress.percentage < 100">
           <div class="progress-bar" [style.width]="progress.percentage + '%'">
             <span class="sr-only">{{ progress.percentage }}%% Complete</span>

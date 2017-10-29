@@ -1,3 +1,5 @@
+import { AuthService } from './../../services/auth.service';
+import { AuthHttp } from 'angular2-jwt';
 import { BrowserXhr } from '@angular/http';
 import { ProgressService, BrowserXhrWithProgress } from './../../services/progress.service';
 import { PhotoService } from './../../services/photo.service';
@@ -30,7 +32,8 @@ export class ViewVehicleComponent implements OnInit {
     private vehicleService: VehicleService,
     private photoService: PhotoService,
     private progressService: ProgressService,
-    private toastyService: ToastyService) {
+    private toastyService: ToastyService,
+    private auth: AuthService) {
 
     this.route.params.subscribe(r => {
       this.vehicleId = +r['id'];

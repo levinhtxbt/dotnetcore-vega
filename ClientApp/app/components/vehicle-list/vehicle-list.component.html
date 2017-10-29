@@ -1,5 +1,5 @@
 <h1>Vehicles</h1>
-<a class="btn btn-primary" [routerLink]="['/vehicles/new']">New Vehicle</a>
+<a *ngIf="auth.isAuthenticated()" class="btn btn-primary" [routerLink]="['/vehicles/new']">New Vehicle</a>
 <p></p>
 <div class="well">
     <div class="form-group">

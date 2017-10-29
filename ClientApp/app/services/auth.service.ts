@@ -19,18 +19,7 @@ export class AuthService {
   private roles: string[] = [];
 
   constructor(public router: Router) {
-    this.profile = JSON.parse(localStorage.getItem('profile'));
-
-    var accessToken = localStorage.getItem('access_token');
-    if (accessToken) {
-      let jwtHelper = new JwtHelper();
-      var decodedToken = jwtHelper.decodeToken(accessToken);
-      if (decodedToken['https://levinh.net/roles'])
-        this.roles = decodedToken['https://levinh.net/roles'];
-      else
-        this.roles = [];
-      console.log(this.roles);
-    }
+    this.readUserFromLocalStorage();
   }
 
   public login(): void {
@@ -39,23 +28,14 @@ export class AuthService {
 
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
-      console.log(authResult);
 
       if (authResult && authResult.accessToken) {
-
-        let jwtHelper = new JwtHelper();
-        var decodedToken = jwtHelper.decodeToken(authResult.accessToken);
-        if (decodedToken['https://levinh.net/roles'])
-          this.roles = decodedToken['https://levinh.net/roles'];
-        else
-          this.roles = [];
-        console.log(this.roles);
 
         window.location.hash = '';
         this.setSession(authResult);
         this.router.navigate(['/home']);
         this.getProfile((err, profile) => {
-          this.profile = profile;
+          this.readUserFromLocalStorage();    
         });
       } else if (err) {
         this.router.navigate(['/home']);
@@ -64,20 +44,34 @@ export class AuthService {
     });
   }
 
+  private readUserFromLocalStorage() {
+
+    this.profile = JSON.parse(localStorage.getItem('profile'));
+
+    var accessToken = localStorage.getItem('access_token');
+
+    if (accessToken) {
+      let jwtHelper = new JwtHelper();
+      var decodedToken = jwtHelper.decodeToken(accessToken);
+      if (decodedToken['https://levinh.net/roles']) {
+        this.roles = decodedToken['https://levinh.net/roles'];  
+      } else 
+        this.roles = [];
+    } else
+      this.roles = [];
+  }
+
   public getProfile(cb): void {
+
     const accessToken = localStorage.getItem('access_token');
 
     if (!accessToken) {
       throw new Error('Access token must exist to fetch profile');
     }
 
-    const self = this;
     this.auth0.client.userInfo(accessToken, (err, profile) => {
 
-      console.log(profile);
-
       if (profile) {
-        self.profile = profile;
         localStorage.setItem('profile', JSON.stringify(profile));
       }
       cb(err, profile);
@@ -100,7 +94,6 @@ export class AuthService {
     localStorage.removeItem('profile');
     this.profile = null;
     this.roles = [];
-
     // Go back to the home route
     this.router.navigate(['/']);
   }
@@ -115,6 +108,4 @@ export class AuthService {
   public isInRole(role: string): boolean {
     return this.roles.indexOf(role) > -1;
   }
-
-
 }

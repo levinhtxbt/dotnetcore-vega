@@ -9,6 +9,7 @@ using vega.Persistence;
 using vega.Core;
 using vega.Core.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using vega.Controllers;
 
 namespace vega
 {
@@ -41,6 +42,11 @@ namespace vega
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddTransient<IPhotoStorage, FileSystemStorage>();
+
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy(Policies.REQUIRE_ADMIN_ROLE, policy => policy.RequireClaim("https://levinh.net/roles", "Admin"));
+            });
 
             services.AddDbContext<VegaDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));

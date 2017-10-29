@@ -26,7 +26,7 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 import { PhotoService } from './services/photo.service';
 import { AUTH_PROVIDERS } from 'angular2-jwt';
-
+import { ChartModule } from 'angular2-chartjs';
 //Raven.config('https://6c62dd47cfae446191762248e67cce1e@sentry.io/224357').install();
 
 @NgModule({
@@ -48,6 +48,7 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
     ToastyModule.forRoot(),
     HttpModule,
     FormsModule,
+    ChartModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },

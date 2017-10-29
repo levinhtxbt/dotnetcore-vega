@@ -1,3 +1,4 @@
+import { AdminComponent } from './components/admin/admin.component';
 import { CallbackComponent } from './components/callback/callback.component';
 import { AuthService } from './services/auth.service';
 import { BrowserXhr } from '@angular/http';
@@ -36,7 +37,8 @@ import { PhotoService } from './services/photo.service';
     VehicleListComponent,
     PaginationComponent,
     ViewVehicleComponent,
-    CallbackComponent
+    CallbackComponent,
+    AdminComponent
   ],
   imports: [
     CommonModule,
@@ -50,8 +52,7 @@ import { PhotoService } from './services/photo.service';
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'admin', component: AdminComponent },
       { path: 'callback', component: CallbackComponent },
       { path: '**', redirectTo: 'home' }
     ])

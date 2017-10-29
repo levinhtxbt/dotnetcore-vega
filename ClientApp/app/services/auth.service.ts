@@ -16,16 +16,19 @@ export class AuthService {
     scope: 'openid email profile'
   });
   public profile: any;
-  public roles: string[] = [];
+  private roles: string[] = [];
 
   constructor(public router: Router) {
     this.profile = JSON.parse(localStorage.getItem('profile'));
 
     var accessToken = localStorage.getItem('access_token');
-    if(accessToken) {
+    if (accessToken) {
       let jwtHelper = new JwtHelper();
       var decodedToken = jwtHelper.decodeToken(accessToken);
-      this.roles = decodedToken['https://levinh.net/roles'];
+      if (decodedToken['https://levinh.net/roles'])
+        this.roles = decodedToken['https://levinh.net/roles'];
+      else
+        this.roles = [];
       console.log(this.roles);
     }
   }
@@ -42,7 +45,10 @@ export class AuthService {
 
         let jwtHelper = new JwtHelper();
         var decodedToken = jwtHelper.decodeToken(authResult.accessToken);
-        this.roles = decodedToken['https://levinh.net/roles'];
+        if (decodedToken['https://levinh.net/roles'])
+          this.roles = decodedToken['https://levinh.net/roles'];
+        else
+          this.roles = [];
         console.log(this.roles);
 
         window.location.hash = '';
@@ -93,7 +99,7 @@ export class AuthService {
     localStorage.removeItem('expires_at');
     localStorage.removeItem('profile');
     this.profile = null;
-    this.roles = null;
+    this.roles = [];
 
     // Go back to the home route
     this.router.navigate(['/']);
@@ -104,6 +110,10 @@ export class AuthService {
     // access token's expiry time
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     return new Date().getTime() < expiresAt;
+  }
+
+  public isInRole(role: string): boolean {
+    return this.roles.indexOf(role) > -1;
   }
 
 

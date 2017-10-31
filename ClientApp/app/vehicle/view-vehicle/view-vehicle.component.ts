@@ -1,13 +1,17 @@
-import { AuthService } from './../../services/auth.service';
+import { AuthService } from './../../core/services/auth.service';
+import { PhotoService } from './../../core/services/photo.service';
+import { VehicleService } from './../../core/services/vehicle.service';
+
 import { AuthHttp } from 'angular2-jwt';
 import { BrowserXhr } from '@angular/http';
-import { ProgressService, BrowserXhrWithProgress } from './../../services/progress.service';
-import { PhotoService } from './../../services/photo.service';
+
+
 import { Vehicle } from './../../models/vehicle';
 import { ToastyService } from 'ng2-toasty';
-import { VehicleService } from './../../services/vehicle.service';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core';
+import { ProgressService, BrowserXhrWithProgress } from '../../core/services/progress.service';
 
 @Component({
   selector: 'app-view-vehicle',

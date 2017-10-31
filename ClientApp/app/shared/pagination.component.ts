@@ -1,5 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
 @Component({
 	selector: 'pagination',
@@ -23,6 +22,7 @@ import { OnChanges } from '@angular/core';
     </nav>  
 `
 })
+
 export class PaginationComponent implements OnChanges {
 	@Input('total-items') totalItems = 1;
 	@Input('page-size') pageSize = 10;

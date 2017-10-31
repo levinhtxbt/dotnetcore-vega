@@ -23,13 +23,18 @@
                 </li>
 
                 <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-                    <a [routerLink]="['/vehicles']">
-                        <span class='glyphicon glyphicon-home'></span> Vehicles
+                    <a [routerLink]="['/make']">
+                        <span class='glyphicon glyphicon-home'></span> Make
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']" *ngIf="auth.isAuthenticated()">
-                    <a [routerLink]="['/vehicles/new']">
-                        <span class='glyphicon glyphicon-plus'></span>New Vehicle
+                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+                    <a [routerLink]="['/model']">
+                        <span class='glyphicon glyphicon-home'></span> Model
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+                    <a [routerLink]="['/vehicles']">
+                        <span class='glyphicon glyphicon-home'></span> Vehicles
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']" *ngIf="auth.isInRole('Admin')">

@@ -13,5 +13,10 @@
     "types": [ "webpack-env" ]
   },
   "exclude": [ "bin", "node_modules" ],
-  "atom": { "rewriteTsconfig": false }
+  "atom": { "rewriteTsconfig": false },
+  "baseUrl": "ClientApp",
+  "paths": {
+    "@app/*": ["app/*"],
+    "@env/*": ["environments/*"]
+  }
 }
